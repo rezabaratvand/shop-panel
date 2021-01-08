@@ -28,7 +28,7 @@ export class GenerateInitialDataService implements OnModuleInit {
 
   async createSuperUserModel(
     data: any = {
-      email: 'superadmin@superadmin.me',
+      email: 'superadmin@mail.me',
       password: '12345678',
       isSuperAdmin: true,
       verified: true,
