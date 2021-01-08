@@ -24,16 +24,16 @@ export class Product {
   brand: Brand;
 
   @Prop({ type: Number, min: 0, max: 5, default: 3 })
-  stars: number;
+  stars?: number;
 
   @Prop({ type: Date })
   specialOfferExpires?: Date;
 
   @Prop({ type: Boolean, default: true })
-  forWholeCountry: boolean;
+  forWholeCountry?: boolean;
 
   @Prop({ type: Number, default: 1 })
-  maxDeliveryDays: number;
+  maxDeliveryDays?: number;
 
   @Prop({ type: [String] })
   colors?: Array<string>;

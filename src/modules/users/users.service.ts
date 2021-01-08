@@ -29,6 +29,35 @@ export class UsersService {
     @Inject(REQUEST) private readonly request: Request,
   ) {}
 
+  // ************** admin routes **************
+
+  async getAllAdmins(filterQueryDto: FilterQueryDto): Promise<UserDocument[]> {
+    const filterQuery = new FilterQueries(
+      this.userModel,
+      filterQueryDto,
+      ui_query_projection_fields,
+    );
+
+    filterQuery.filter().limitFields().paginate().sort();
+
+    const users = await filterQuery.query
+      .find({ isStaff: true })
+      .populate('roles', 'name permissions')
+      .populate('wishLists', 'title ');
+    return users;
+  }
+
+  async getAdminById(code: number): Promise<UserDocument> {
+    const user = await this.userModel
+      .findOne({ code, isStaff: true })
+      .select(ui_query_projection_fields)
+      .populate('roles', 'name permissions')
+      .populate('wishLists', 'title ');
+    if (!user) throw new NotFoundException('not found user by the given id');
+    return user;
+  }
+
+  // ************** users routes **************
   async getAllUsers(filterQueryDto: FilterQueryDto): Promise<UserDocument[]> {
     const filterQuery = new FilterQueries(
       this.userModel,
@@ -39,6 +68,7 @@ export class UsersService {
     filterQuery.filter().limitFields().paginate().sort();
 
     const users = await filterQuery.query
+      .find({ isStaff: false })
       .populate('roles', 'name permissions')
       .populate('wishLists', 'title ');
     return users;
@@ -46,7 +76,7 @@ export class UsersService {
 
   async getUserById(code: number): Promise<UserDocument> {
     const user = await this.userModel
-      .findOne({ code })
+      .findOne({ code, isStaff: false })
       .select(ui_query_projection_fields)
       .populate('roles', 'name permissions')
       .populate('wishLists', 'title ');

@@ -28,12 +28,12 @@ export class ArticlesService {
 
     filterQuery.filter().limitFields().paginate().sort();
 
-    return await filterQuery.query.populate('author', 'email phoneNumber');
+    return await filterQuery.query.populate('author', 'fullName avatar');
   }
   async getById(code: number) {
     const article = await this.articleModel
       .findOne({ code })
-      .populate('author', 'email phoneNumber');
+      .populate('author', 'fullName avatar');
 
     if (!article) throw new NotFoundException('Article not found');
 

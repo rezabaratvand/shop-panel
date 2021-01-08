@@ -38,7 +38,26 @@ import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+  // admin routes
+  @Get('admins')
+  @Roles('SUPER_ADMIN')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get all admins' })
+  @ApiOkResponse()
+  async getAllAdmins(@Query() filterQueryDto: FilterQueryDto): Promise<UserDocument[]> {
+    return await this.usersService.getAllAdmins(filterQueryDto);
+  }
 
+  @Get('admins:id')
+  @Roles('SUPER_ADMIN')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse()
+  @ApiOperation({ summary: 'Get a admin user by id' })
+  @ApiParam({ name: 'id', required: true })
+  async getAdminById(@Param('id') code: number): Promise<UserDocument> {
+    return await this.usersService.getAdminById(code);
+  }
+  // users routes
   @Get()
   @Roles(permissions.READ_USER)
   @HttpCode(HttpStatus.OK)

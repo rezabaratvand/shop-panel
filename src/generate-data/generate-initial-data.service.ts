@@ -11,6 +11,7 @@ import {
   Category,
   CategoryDocument,
 } from '../modules/categories/schemas/category.schema';
+import { GenerateFakeDataService } from './generate-fake-data.service';
 
 @Injectable()
 export class GenerateInitialDataService implements OnModuleInit {
@@ -19,11 +20,13 @@ export class GenerateInitialDataService implements OnModuleInit {
     @InjectModel(Category.name) private readonly categoryModel: Model<CategoryDocument>,
     @InjectModel(WebsiteInformation.name)
     private readonly websiteInfoModel: Model<WebsiteInformationDocument>,
+    private readonly generateFakeDataService: GenerateFakeDataService,
   ) {}
 
   async onModuleInit() {
     await this.createSuperUserModel();
     await this.InitialWebsiteInfo();
+    await this.generateFakeDataService.generateFakeDocuments();
   }
 
   async createSuperUserModel(
@@ -33,6 +36,7 @@ export class GenerateInitialDataService implements OnModuleInit {
       isSuperAdmin: true,
       verified: true,
       isActive: true,
+      isStaff: true,
       code: 1,
     },
   ): Promise<UserDocument> {
