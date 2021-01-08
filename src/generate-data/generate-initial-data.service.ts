@@ -36,13 +36,13 @@ export class GenerateInitialDataService implements OnModuleInit {
       code: 1,
     },
   ): Promise<UserDocument> {
-    const users = await this.userModel.find();
-    if (!users.length) {
-      const user: UserDocument = await this.userModel.create(data);
+    const superAdmin = await this.userModel.findOne({ email: data.email });
+    if (!superAdmin) {
+      const superAdmin: UserDocument = await this.userModel.create(data);
       Logger.verbose(
         'super user created. <!! change email and password as soon as you can !!>',
       );
-      return user;
+      return superAdmin;
     }
   }
   async InitialWebsiteInfo() {
