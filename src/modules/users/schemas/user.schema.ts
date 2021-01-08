@@ -41,39 +41,40 @@ export class User {
   password: string;
 
   @Prop({ type: Boolean, default: false, select: false })
-  isSuperAdmin: boolean;
+  isSuperAdmin?: boolean;
 
   @Prop({ type: Boolean, default: false })
-  isStaff: boolean;
+  isStaff?: boolean;
 
   @Prop({ type: Boolean, default: true, select: false })
-  isActive: boolean;
+  isActive?: boolean;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: Role.name, index: true }] })
-  roles: Role[];
+  roles?: Role[];
 
   @Prop({ type: Boolean, default: false, select: false })
-  verified: boolean;
+  verified?: boolean;
 
   @Prop({ type: Number })
-  verificationCode: number;
+  verificationCode?: number;
 
   @Prop({ type: Date })
-  verificationExpires: Date;
+  verificationExpires?: Date;
 
   @Prop({ type: Number, default: 0 })
-  confirmationAttemptsCount: number;
+  confirmationAttemptsCount?: number;
 
   @Prop({ type: Date })
-  blockExpires: Date;
+  blockExpires?: Date;
 
   @Prop({ type: String, maxlength: 32 })
   nationalCode?: string;
 
   @Prop({
     type: [{ type: Object }],
+    required: false,
   })
-  addresses: [];
+  addresses?: [object];
 
   @Prop({
     type: [{ type: mongoose.Types.ObjectId, ref: Product.name }],
