@@ -57,6 +57,29 @@ export class UsersController {
   async getAdminById(@Param('id') code: number): Promise<UserDocument> {
     return await this.usersService.getAdminById(code);
   }
+
+  @Patch('admins:id')
+  @Roles('SUPER_ADMIN')
+  @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Update admin user' })
+  @ApiOkResponse()
+  @ApiParam({ name: 'id', required: true })
+  async updateAdmin(
+    @Param('id') code: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return await this.usersService.updateAdmin(code, updateUserDto);
+  }
+
+  @Delete('admins/:id')
+  @Roles('SUPER_ADMIN')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiOperation({ summary: 'Delete admin user' })
+  @ApiNoContentResponse()
+  @ApiParam({ name: 'id', required: true })
+  async deleteAdmin(@Param('id') code: number): Promise<void> {
+    return this.usersService.deleteAdmin(code);
+  }
   // users routes
   @Get()
   @Roles(permissions.READ_USER)

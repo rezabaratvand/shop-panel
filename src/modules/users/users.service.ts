@@ -53,8 +53,36 @@ export class UsersService {
       .select(ui_query_projection_fields)
       .populate('roles', 'name permissions')
       .populate('wishLists', 'title ');
-    if (!user) throw new NotFoundException('not found user by the given id');
+    if (!user) throw new NotFoundException('not found admin user with the given id');
     return user;
+  }
+
+  async updateAdmin(code: number, updateUserDto: UpdateUserDto): Promise<UserDocument> {
+    const { email, phoneNumber, roles, wishLists } = updateUserDto;
+
+    await this.getAdminById(code);
+
+    await this.checkUserExistence(email, phoneNumber);
+
+    if (roles && roles.length) await this.doesInstanceModelExists(roles, this.roleModel);
+
+    if (wishLists && wishLists.length)
+      await this.doesInstanceModelExists(wishLists, this.productModel);
+
+    this.checkSuperAdmin(this.request.user, updateUserDto);
+
+    return await this.adminLogService.update(
+      this.request.user,
+      this.userModel,
+      code,
+      updateUserDto,
+    );
+  }
+
+  async deleteAdmin(code: number): Promise<void> {
+    await this.getAdminById(code);
+
+    return await this.adminLogService.delete(this.request.user, this.userModel, code);
   }
 
   // ************** users routes **************
@@ -128,6 +156,8 @@ export class UsersService {
   }
 
   async deleteUser(code: number): Promise<void> {
+    await this.getUserById(code);
+
     return await this.adminLogService.delete(this.request.user, this.userModel, code);
   }
 
