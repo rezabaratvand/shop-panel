@@ -29,7 +29,7 @@ import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@ApiTags(`${prefix}/'website-information'`)
+@ApiTags(`${prefix}/website-information`)
 @Controller(`${prefix}/website-information`)
 export class WebsiteInformationController {
   constructor(private readonly websiteInformationService: WebsiteInformationService) {}
