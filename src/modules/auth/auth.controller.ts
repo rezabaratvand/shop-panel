@@ -39,6 +39,7 @@ import { ChangeMyPasswordDto } from './dto/changeMyPassword.dto';
 import { ChangeMyInfoDto } from './dto/changeMyInfo.dto';
 import { VerifyForgotPasswordDto } from './dto/verifyForgotPassword.dto';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
+import { AuthHistoryDocument } from './schemas/authHistory.schema';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -229,5 +230,19 @@ export class AuthController {
   @ApiOperation({ summary: 'verify access token' })
   async doesTokenExpires(): Promise<boolean> {
     return true;
+  }
+
+  // auth histories
+  @Get('auth-histories')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'))
+  @Roles('SUPER_ADMIN')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Get all authHistories' })
+  @ApiOkResponse()
+  async getAuthHistories(
+    @Query() filterQueryDto: FilterQueryDto,
+  ): Promise<AuthHistoryDocument[]> {
+    return await this.authService.getAuthHistories(filterQueryDto);
   }
 }

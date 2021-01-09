@@ -103,7 +103,7 @@ export class GenerateFakeDataService {
 
   // private methods
   private async generateSingleUser() {
-    const user = this.userModel.create({
+    await this.userModel.create({
       email: faker.internet.email(),
       phoneNumber: '09123456789',
       password: faker.internet.password(8),

@@ -358,6 +358,14 @@ export class AuthService {
     };
   }
 
+  async getAuthHistories(filterQueryDto: FilterQueryDto): Promise<AuthHistoryDocument[]> {
+    const filterQuery = new FilterQueries(this.authHistoryModel, filterQueryDto);
+
+    filterQuery.filter().limitFields().paginate().sort();
+
+    return await filterQuery.query;
+  }
+
   // ***************** private methods ********************
 
   private async checkRoleExistence(roleName: string) {

@@ -60,6 +60,7 @@ export class CreateProductDto {
   @ApiProperty({
     name: 'brand',
     description: 'product brand',
+    example: '5fe13e59fd04eb23382fbe90',
     required: true,
     type: String,
   })
