@@ -9,4 +9,6 @@ export default {
   RESET_PASSWORD: 'reset_password',
   REFRESH_ACCESS_TOKEN: 'refresh_access_token',
   VERIFY_FORGOT_PASSWORD: 'verify_forgot_password',
+  CHANGE_MY_PASSWORD: 'change_my_password',
+  CHANGE_MY_INFO: 'change_my_info',
 };

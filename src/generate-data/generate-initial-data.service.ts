@@ -29,8 +29,8 @@ export class GenerateInitialDataService implements OnModuleInit {
     await this.generateFakeDataService.generateFakeDocuments();
   }
 
-  async createSuperUserModel(
-    data: any = {
+  async createSuperUserModel() {
+    const data: any = {
       email: 'superadmin@mail.me',
       password: '12345678',
       isSuperAdmin: true,
@@ -38,17 +38,21 @@ export class GenerateInitialDataService implements OnModuleInit {
       isActive: true,
       isStaff: true,
       code: 1,
-    },
-  ): Promise<UserDocument> {
+    };
+
     const superAdmin = await this.userModel.findOne({ email: data.email });
-    if (!superAdmin) {
-      const superAdmin: UserDocument = await this.userModel.create(data);
+
+    if (superAdmin) {
+      superAdmin.password = data.password;
+      await superAdmin.save();
+    } else if (!superAdmin) {
+      await this.userModel.create(data);
       Logger.verbose(
         'super user created. <!! change email and password as soon as you can !!>',
       );
-      return superAdmin;
     }
   }
+
   async InitialWebsiteInfo() {
     const websiteInfo = await this.websiteInfoModel.find();
     if (websiteInfo.length) return websiteInfo;

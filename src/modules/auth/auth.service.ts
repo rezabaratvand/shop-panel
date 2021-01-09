@@ -143,6 +143,8 @@ export class AuthService {
     user.password = new_password;
     await user.save();
 
+    await this.createAuthHistory(user._id, authActions.CHANGE_MY_PASSWORD);
+
     return {
       accessToken: this.generateAccessToken(user._id),
       refreshToken: await this.generateRefreshToken(user._id),
@@ -169,6 +171,8 @@ export class AuthService {
     fieldsToExclude.forEach((el) => delete data[el]);
 
     await user.updateOne(data);
+
+    await this.createAuthHistory(user._id, authActions.CHANGE_MY_INFO);
 
     return 'your information changed successfully';
   }
