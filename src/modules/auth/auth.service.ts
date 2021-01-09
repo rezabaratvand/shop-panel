@@ -363,7 +363,10 @@ export class AuthService {
 
     filterQuery.filter().limitFields().paginate().sort();
 
-    return await filterQuery.query;
+    return await filterQuery.query.populate(
+      'user',
+      'email phoneNumber fullName code -_id',
+    );
   }
 
   // ***************** private methods ********************
