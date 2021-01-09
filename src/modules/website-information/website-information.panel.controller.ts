@@ -25,12 +25,12 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { WebsiteInformationDocument } from './schemas/website-information.schema';
 import { UpdateWebsiteInformationDto } from './dto/update-website-information.dto';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@ApiTags('website-information')
-@Controller('website-information')
+@ApiTags(`${prefix}/'website-information'`)
+@Controller(`${prefix}/website-information`)
 export class WebsiteInformationController {
   constructor(private readonly websiteInformationService: WebsiteInformationService) {}
 
@@ -43,7 +43,7 @@ export class WebsiteInformationController {
     return await this.websiteInformationService.getWebsiteInfo();
   }
 
-  @Patch(':id')
+  @Patch()
   @Roles('SUPER_ADMIN')
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'edit website information' })

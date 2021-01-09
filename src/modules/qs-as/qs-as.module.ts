@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from '../products/schemas/product.schema';
-import { QsAsController } from './qs-as.controller';
+import { QsAsController } from './qs-as.panel.controller';
 import { QsAsService } from './qs-as.service';
 import { Answer, AnswerSchema } from './schemas/answer.schema';
 import { Question, QuestionSchema } from './schemas/question.schema';

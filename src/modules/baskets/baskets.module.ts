@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BasketsController } from './baskets.controller';
+import { BasketsController } from './baskets.panel.controller';
 import { BasketsService } from './baskets.service';
 import { Basket, BasketSchema } from './schemas/basket.schema';
 

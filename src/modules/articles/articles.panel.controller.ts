@@ -30,12 +30,12 @@ import { ArticlesService } from './articles.service';
 import { ArticleDocument } from './schema/article.schema';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@ApiTags('articles')
-@Controller('articles')
+@ApiTags(`${prefix}/articles`)
+@Controller(`${prefix}/articles`)
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
   @Get()

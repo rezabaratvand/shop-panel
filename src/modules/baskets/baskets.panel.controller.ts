@@ -22,40 +22,41 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import permissions from '../../constants/permissions.constant';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
-import { PaymentsService } from './payments.service';
-import { PaymentDocument } from './schemas/payment.schema';
+import { BasketsService } from './baskets.service';
+import { BasketDocument } from './schemas/basket.schema';
+import { prefix } from 'src/constants/prefix-panel.constant';
 
 @ApiBearerAuth()
-@ApiTags('payments')
+@ApiTags(`${prefix}/baskets`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('payments')
-export class PaymentsController {
-  constructor(private readonly basketsService: PaymentsService) {}
+@Controller(`${prefix}/baskets`)
+export class BasketsController {
+  constructor(private readonly basketsService: BasketsService) {}
 
   @Get()
-  @Roles(permissions.READ_PAYMENT)
+  @Roles(permissions.READ_BASKET)
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Get all payments' })
+  @ApiOperation({ summary: 'Get all baskets' })
   @ApiOkResponse()
-  async getAll(@Query() filterQueryDto: FilterQueryDto): Promise<PaymentDocument[]> {
+  async getAll(@Query() filterQueryDto: FilterQueryDto): Promise<BasketDocument[]> {
     return await this.basketsService.getAll(filterQueryDto);
   }
 
   @Get(':id')
-  @Roles(permissions.READ_PAYMENT)
+  @Roles(permissions.READ_BASKET)
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse()
-  @ApiOperation({ summary: 'Get a payment instance by id' })
+  @ApiOperation({ summary: 'Get a basket instance by id' })
   @ApiParam({ name: 'id', required: true })
-  async getById(@Param('id') code: number): Promise<PaymentDocument> {
+  async getById(@Param('id') code: number): Promise<BasketDocument> {
     return await this.basketsService.getById(code);
   }
 
   @Delete('/:id')
-  @Roles(permissions.DELETE_PAYMENT)
+  @Roles(permissions.DELETE_BASKET)
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Delete payment' })
+  @ApiOperation({ summary: 'Delete basket' })
   @ApiNoContentResponse()
   @ApiParam({ name: 'id', required: true })
   async delete(@Param('id') code: number): Promise<void> {

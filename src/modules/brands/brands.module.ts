@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BrandsController } from './brands.controller';
+import { BrandsController } from './brands.panel.controller';
 import { BrandsService } from './brands.service';
 import { Brand, BrandSchema } from './schemas/brand.schema';
 

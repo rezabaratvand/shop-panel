@@ -3,7 +3,6 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../users/schemas/user.schema';
-import { Role, RoleSchema } from './schemas/role.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import * as dotenv from 'dotenv';
@@ -31,13 +30,6 @@ dotenv.config();
         name: User.name,
         useFactory: () => {
           const schema = UserSchema;
-          return schema;
-        },
-      },
-      {
-        name: Role.name,
-        useFactory: () => {
-          const schema = RoleSchema;
           return schema;
         },
       },

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
-import { ArticlesController } from './articles.controller';
+import { ArticlesController } from './articles.panel.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Article, ArticleSchema } from './schema/article.schema';
 import { User, UserSchema } from '../users/schemas/user.schema';

@@ -30,12 +30,13 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import permissions from '../../constants/permissions.constant';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
+import { prefix } from 'src/constants/prefix-panel.constant';
 
 @ApiBearerAuth()
-@ApiTags('users')
+@ApiTags(`${prefix}/users`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('users')
+@Controller(`${prefix}/users`)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   // admin routes

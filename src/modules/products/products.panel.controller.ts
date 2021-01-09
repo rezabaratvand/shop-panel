@@ -30,12 +30,12 @@ import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { ProductDocument } from './schemas/product.schema';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
-@ApiTags('products')
+@ApiTags(`${prefix}/products`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('products')
+@Controller(`${prefix}/products`)
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
   @Get()

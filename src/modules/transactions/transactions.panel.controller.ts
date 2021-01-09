@@ -24,12 +24,12 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { TransactionsService } from './transactions.service';
 import { TransactionDocument } from './schemas/transaction.schema';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
-@ApiTags('transactions')
+@ApiTags(`${prefix}/transactions`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('transactions')
+@Controller(`${prefix}/transactions`)
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 

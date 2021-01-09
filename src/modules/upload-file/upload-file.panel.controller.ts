@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiConsumes, ApiParam, ApiTags } from '@nestjs/swagger';
+import { prefix } from 'src/constants/prefix-panel.constant';
 import { ApiFile } from '../../common/decorators/api-file.decorator';
 import { ApiMultiFile } from '../../common/decorators/api-multi-file.decorator';
 import uploadImage from '../../configs/upload-image.config';
@@ -18,12 +19,11 @@ import permissions from '../../constants/permissions.constant';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UploadFileService } from './upload-file.service';
-
 @ApiBearerAuth()
-@ApiTags('upload-file')
+@ApiTags(`${prefix}/upload-file`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('upload-file')
+@Controller(`${prefix}/upload-file`)
 export class UploadFileController {
   constructor(private readonly uploadFileService: UploadFileService) {}
 

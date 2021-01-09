@@ -26,6 +26,7 @@ import { BrandsModule } from './modules/brands/brands.module';
 import { QsAsModule } from './modules/qs-as/qs-as.module';
 import { CommentsModule } from './modules/comments/comments.module';
 import { UploadFileModule } from './modules/upload-file/upload-file.module';
+import { RolesModule } from './modules/roles/roles.module';
 import sequencePlugin from './common/plugins/sequence.plugin';
 
 @Module({
@@ -63,6 +64,7 @@ import sequencePlugin from './common/plugins/sequence.plugin';
     QsAsModule,
     CommentsModule,
     UploadFileModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [

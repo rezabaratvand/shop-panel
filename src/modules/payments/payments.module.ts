@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PaymentsController } from './payments.controller';
+import { PaymentsController } from './payments.panel.controller';
 import { PaymentsService } from './payments.service';
 import { Payment, PaymentSchema } from './schemas/payment.schema';
 

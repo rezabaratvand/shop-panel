@@ -27,11 +27,11 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import permissions from '../../constants/permissions.constant';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
-@ApiTags('comments')
+@ApiTags(`${prefix}/comments`)
 @UseGuards(AuthGuard('jwt'))
-@Controller('comments')
+@Controller(`${prefix}/comments`)
 @UseGuards(RolesGuard)
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}

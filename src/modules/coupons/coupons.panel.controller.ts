@@ -30,12 +30,12 @@ import { CouponsService } from './coupons.service';
 import { CouponDocument } from './schemas/coupon.schema';
 import { CreateCouponDto } from './dto/create-coupon.dto';
 import { UpdateCouponDto } from './dto/update-coupon.dto';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@ApiTags('coupons')
-@Controller('coupons')
+@ApiTags(`${prefix}/coupons`)
+@Controller(`${prefix}/coupons`)
 export class CouponsController {
   constructor(private readonly couponsService: CouponsService) {}
   @Get()

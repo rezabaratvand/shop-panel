@@ -2,45 +2,30 @@ import {
   Body,
   Query,
   Controller,
-  Delete,
   Get,
   HttpCode,
   HttpStatus,
-  Param,
-  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiNoContentResponse,
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Roles } from './decorators/roles.decorator';
 import { AuthSignInDto } from './dto/auth-signIn.dto';
 import { AuthSignUpDto } from './dto/auth-signUp.dto';
 import { RolesGuard } from './guards/roles.guard';
-import { RoleDocument } from './schemas/role.schema';
-import { CreateRoleDto } from './dto/createRole.dto';
-import { UpdateRoleDto } from './dto/updateRole.dto';
 import { RefreshAccessTokenDto } from './dto/refreshAccessToken.dto';
 import { ForgotPasswordDto } from './dto/forgotPassword.dto';
 import { PasswordResetDto } from './dto/passwordReset.dto';
 import { VerifyPhoneNumberDto } from './dto/verifyPhoneNumber.dto';
 import { VerifyEmailDto } from './dto/verifyEmail.dto';
-import { Role } from './schemas/role.schema';
 import { ChangeMyPasswordDto } from './dto/changeMyPassword.dto';
 import { ChangeMyInfoDto } from './dto/changeMyInfo.dto';
 import { VerifyForgotPasswordDto } from './dto/verifyForgotPassword.dto';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { AuthHistoryDocument } from './schemas/authHistory.schema';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiTags('auth')
 @Controller('auth')
 @UseGuards(RolesGuard)
@@ -63,68 +48,6 @@ export class AuthController {
     @Body() authSignInDto: AuthSignInDto,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     return this.authService.signIn(authSignInDto);
-  }
-
-  // roles CRUD routes
-  @Get('roles')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('SUPER_ADMIN')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Get all roles' })
-  @ApiOkResponse()
-  async getAllRoles(@Query() filterQueryDto: FilterQueryDto): Promise<Role[]> {
-    return await this.authService.getAllRoles(filterQueryDto);
-  }
-
-  @Get('roles/:id')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('SUPER_ADMIN')
-  @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Get a role by id' })
-  @ApiOkResponse()
-  @ApiParam({ name: 'id', required: true })
-  async getRoleById(@Param('id') code: number): Promise<RoleDocument> {
-    return await this.authService.getRoleById(code);
-  }
-
-  @Post('roles')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('SUPER_ADMIN')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiCreatedResponse()
-  @ApiOperation({ summary: 'Create role' })
-  async createRole(@Body() creteRoleDto: CreateRoleDto): Promise<RoleDocument> {
-    return await this.authService.createRole(creteRoleDto);
-  }
-
-  @Patch('roles/:id')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('SUPER_ADMIN')
-  @HttpCode(HttpStatus.CREATED)
-  @ApiOperation({ summary: 'Update role' })
-  @ApiOkResponse()
-  @ApiParam({ name: 'id', required: true })
-  async updateRole(
-    @Param('id') code: number,
-    @Body() updateRoleDto: UpdateRoleDto,
-  ): Promise<RoleDocument> {
-    return await this.authService.updateRole(code, updateRoleDto);
-  }
-
-  @Delete('roles/:id')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard('jwt'))
-  @Roles('SUPER_ADMIN')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiNoContentResponse()
-  @ApiOperation({ summary: 'Delete role' })
-  @ApiParam({ name: 'id', required: true })
-  async deleteRole(@Param('id') code: number): Promise<string> {
-    return this.authService.deleteRole(code);
   }
 
   // change my password
@@ -233,7 +156,7 @@ export class AuthController {
   }
 
   // auth histories
-  @Get('auth-histories')
+  @Get(`${prefix}/auth-histories`)
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
   @Roles('SUPER_ADMIN')

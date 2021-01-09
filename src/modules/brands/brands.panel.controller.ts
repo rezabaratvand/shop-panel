@@ -30,12 +30,13 @@ import { BrandsService } from './brands.service';
 import { BrandDocument } from './schemas/brand.schema';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { prefix } from 'src/constants/prefix-panel.constant';
 
 @ApiBearerAuth()
-@ApiTags('brands')
+@ApiTags(`${prefix}/brands`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('brands')
+@Controller(`${prefix}/brands`)
 export class BrandsController {
   constructor(private readonly brandService: BrandsService) {}
 

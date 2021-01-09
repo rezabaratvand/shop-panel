@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SmsService } from './sms.service';
-import { SmsController } from './sms.controller';
+import { SmsController } from './sms.panel.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Sms, SmsSchema } from './schemas/sms.schema';
 

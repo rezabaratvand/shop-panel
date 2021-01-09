@@ -30,12 +30,13 @@ import { BannersService } from './banners.service';
 import { BannerDocument } from './schemas/banner.schema';
 import { CreateBannerDto } from './dto/create-banner.dto';
 import { UpdateBannerDto } from './dto/update-banner.dto';
+import { prefix } from 'src/constants/prefix-panel.constant';
 
 @ApiBearerAuth()
-@ApiTags('banners')
+@ApiTags(`${prefix}/banners`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('banners')
+@Controller(`${prefix}/banners`)
 export class BannersController {
   constructor(private readonly bannersService: BannersService) {}
 

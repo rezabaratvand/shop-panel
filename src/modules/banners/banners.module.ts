@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { BannersService } from './banners.service';
-import { BannersController } from './banners.controller';
+import { BannersController } from './banners.panel.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Banner, BannerSchema } from './schemas/banner.schema';
 

@@ -1,6 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { prefix } from 'src/constants/prefix-panel.constant';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -8,10 +9,10 @@ import { AdminLogsService } from './admin-logs.service';
 import { AdminLogDocument } from './schemas/adminLog.schema';
 
 @ApiBearerAuth()
-@ApiTags('adminLog')
+@ApiTags(`${prefix}/admin-logs`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('admin-logs')
+@Controller(`${prefix}/admin-logs`)
 export class AdminLogsController {
   constructor(private readonly adminLogService: AdminLogsService) {}
   @Get()

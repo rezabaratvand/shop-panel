@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminLogsService } from './admin-logs.service';
 import { AdminLog, AdminLogSchema } from './schemas/adminLog.schema';
-import { AdminLogsController } from './admin-logs.controller';
+import { AdminLogsController } from './admin-logs.panel.controller';
 
 @Global()
 @Module({

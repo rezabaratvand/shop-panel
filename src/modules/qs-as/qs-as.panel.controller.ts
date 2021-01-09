@@ -32,12 +32,12 @@ import { UpdateQuestionDto } from './dto/update-question.dto';
 import { AnswerDocument } from './schemas/answer.schema';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
-
+import { prefix } from 'src/constants/prefix-panel.constant';
 @ApiBearerAuth()
-@ApiTags('qs-as')
+@ApiTags(`${prefix}/qs-as`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('qs-as')
+@Controller(`${prefix}/qs-as`)
 export class QsAsController {
   constructor(private readonly QsAsService: QsAsService) {}
   // *************** Question methods ***************

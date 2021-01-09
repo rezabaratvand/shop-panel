@@ -24,12 +24,13 @@ import { Roles } from '../auth/decorators/roles.decorator';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { OrdersService } from './orders.service';
 import { OrderDocument } from './schemas/order.schema';
+import { prefix } from 'src/constants/prefix-panel.constant';
 
 @ApiBearerAuth()
-@ApiTags('orders')
+@ApiTags(`${prefix}/orders`)
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('orders')
+@Controller(`${prefix}/orders`)
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 

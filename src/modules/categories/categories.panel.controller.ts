@@ -32,12 +32,12 @@ import { CategoryDocument } from './schemas/category.schema';
 import permissions from '../../constants/permissions.constant';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
-
-@ApiTags('categories')
+import { prefix } from 'src/constants/prefix-panel.constant';
+@ApiTags(`${prefix}/categories`)
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RolesGuard)
-@Controller('categories')
+@Controller(`${prefix}/categories`)
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 

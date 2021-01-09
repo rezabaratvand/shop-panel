@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { WebsiteInformationService } from './website-information.service';
-import { WebsiteInformationController } from './website-information.controller';
+import { WebsiteInformationController } from './website-information.panel.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   WebsiteInformation,
