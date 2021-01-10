@@ -188,7 +188,7 @@ export class GenerateFakeDataService {
       ],
       fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
       isStaff: false,
-      avatar: faker.image.avatar(),
+      avatar: faker.image.people(200, 200),
       credit: faker.finance.creditCardCVV(),
       nationalCode: `${faker.random.number(20) + 1}`,
     });
