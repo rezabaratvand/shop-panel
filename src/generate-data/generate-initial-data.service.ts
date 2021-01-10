@@ -57,11 +57,17 @@ export class GenerateInitialDataService implements OnModuleInit {
     const websiteInfo = await this.websiteInfoModel.find();
     if (websiteInfo.length) return websiteInfo;
 
-    const data: any = {
-      name: faker.name.title(),
-      picture: 'picture',
-      properties: ['color'],
-      thumbnail: 'image',
+    const data = {
+      name: faker.name.jobArea(),
+      properties: [
+        faker.random.word(),
+        faker.random.word(),
+        faker.random.word(),
+        faker.random.word(),
+        faker.random.word(),
+      ],
+      picture: faker.image.abstract(1000, 1000),
+      thumbnail: faker.image.abstract(200, 200),
     };
     const category = await this.categoryModel.create(data);
 
@@ -75,7 +81,7 @@ export class GenerateInitialDataService implements OnModuleInit {
         faker.image.business(300, 100),
       ],
       blogPicture: faker.image.business(100, 100),
-      homeCategories: [category],
+      homeCategories: [category._id],
       instagramLink: faker.internet.url(),
       twitterLink: faker.internet.url(),
       linkedinLink: faker.internet.url(),
