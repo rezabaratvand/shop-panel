@@ -15,7 +15,9 @@ import { Brand, BrandSchema } from 'src/modules/brands/schemas/brand.schema';
 import { Article, ArticleSchema } from 'src/modules/articles/schema/article.schema';
 import { Banner, BannerSchema } from 'src/modules/banners/schemas/banner.schema';
 import { Order, OrderSchema } from 'src/modules/orders/schemas/order.schema';
-
+import { QuestionSchema, Question } from 'src/modules/qs-as/schemas/question.schema';
+import { Answer, AnswerSchema } from 'src/modules/qs-as/schemas/answer.schema';
+import { Payment, PaymentSchema } from 'src/modules/payments/schemas/payment.schema';
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
@@ -79,6 +81,27 @@ import { Order, OrderSchema } from 'src/modules/orders/schemas/order.schema';
         name: Order.name,
         useFactory: () => {
           const schema = OrderSchema;
+          return schema;
+        },
+      },
+      {
+        name: Question.name,
+        useFactory: () => {
+          const schema = QuestionSchema;
+          return schema;
+        },
+      },
+      {
+        name: Answer.name,
+        useFactory: () => {
+          const schema = AnswerSchema;
+          return schema;
+        },
+      },
+      {
+        name: Payment.name,
+        useFactory: () => {
+          const schema = PaymentSchema;
           return schema;
         },
       },

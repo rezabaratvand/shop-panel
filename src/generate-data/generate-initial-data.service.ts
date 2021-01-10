@@ -40,20 +40,29 @@ export class GenerateInitialDataService implements OnModuleInit {
       code: 1,
     };
 
-    const superAdmin = await this.userModel.findOne({ email: data.email });
+    await this.userModel.deleteMany({});
 
-    if (superAdmin) {
-      superAdmin.password = data.password;
-      await superAdmin.save();
-    } else if (!superAdmin) {
-      await this.userModel.create(data);
-      Logger.verbose(
-        'super user created. <!! change email and password as soon as you can !!>',
-      );
-    }
+    await this.userModel.create(data);
+    Logger.verbose(
+      'super user created. <!! change email and password as soon as you can !!>',
+    );
+
+    // const superAdmin = await this.userModel.findOne({ email: data.email });
+
+    // if (superAdmin) {
+    //   superAdmin.password = data.password;
+    //   await superAdmin.save();
+    // } else if (!superAdmin) {
+    //   await this.userModel.create(data);
+    //   Logger.verbose(
+    //     'super user created. <!! change email and password as soon as you can !!>',
+    //   );
+    // }
   }
 
   async InitialWebsiteInfo() {
+    await this.categoryModel.deleteMany({});
+
     const websiteInfo = await this.websiteInfoModel.find();
     if (websiteInfo.length) return websiteInfo;
 

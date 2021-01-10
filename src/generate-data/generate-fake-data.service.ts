@@ -15,6 +15,12 @@ import { Article, ArticleDocument } from 'src/modules/articles/schema/article.sc
 import { Banner, BannerDocument } from 'src/modules/banners/schemas/banner.schema';
 import platformsConstant from 'src/constants/platforms.constant';
 import { Order, OrderDocument } from 'src/modules/orders/schemas/order.schema';
+import { QuestionDocument, Question } from 'src/modules/qs-as/schemas/question.schema';
+import { Answer, AnswerDocument } from 'src/modules/qs-as/schemas/answer.schema';
+import { Payment, PaymentDocument } from 'src/modules/payments/schemas/payment.schema';
+import paymentStatusesConstant from 'src/constants/payment-statuses.constant';
+import paymentMethodsConstant from 'src/constants/payment-methods.constant';
+import orderStatuesConstant from 'src/constants/order-statues.constant';
 @Injectable()
 export class GenerateFakeDataService {
   constructor(
@@ -26,89 +32,148 @@ export class GenerateFakeDataService {
     @InjectModel(Article.name) private articleModel: Model<ArticleDocument>,
     @InjectModel(Banner.name) private bannerModel: Model<BannerDocument>,
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
+    @InjectModel(Question.name) private questionModel: Model<QuestionDocument>,
+    @InjectModel(Answer.name) private answerModel: Model<AnswerDocument>,
+    @InjectModel(Payment.name) private paymentModel: Model<PaymentDocument>,
   ) {}
 
-  async createNotVerifiedUser(
-    data = {
-      email: faker.internet.email(),
-      password: faker.internet.password(8),
-      verified: false,
-    },
-  ): Promise<UserDocument> {
-    const user: UserDocument = new this.userModel(data);
-    await user.save();
-    return user;
+  async generateFakeDocuments() {
+    await this.generateCategories();
+    await this.generateBrands();
+    await this.generateProducts();
+    await this.generateUsers();
+    await this.generateArticles();
+    await this.generateQAs();
+    await this.generatePayments();
+    await this.generateOrders();
+    await this.generateBanners();
+    await this.generateRoles();
   }
 
-  async generateSingleRole(
-    data = {
-      name: faker.random.word(),
-      permissions: [permissions.CREATE_USER, permissions.UPDATE_USER],
-    },
-  ): Promise<RoleDocument> {
-    const role: RoleDocument = new this.roleModel(data);
-    await role.save();
-    return role;
+  // ************************** private methods **************************
+
+  // ****** multiple-instance generator methods *******
+
+  private async generateRoles(number: number = 100) {
+    if (!(await this.roleModel.find({})).length)
+      for (let i = 0; i < number; i++) {
+        await this.generateSingleRole();
+      }
   }
 
-  async generateCategories(number: number = 10) {
+  private async generateCategories(number: number = 5) {
     if ((await this.categoryModel.find({})).length <= 1)
       for (let i = 0; i < number; i++) {
         await this.generateSingleCategory();
       }
   }
 
-  async generateBrands(number: number = 50) {
+  private async generateBrands(number: number = 100) {
+    await this.brandModel.deleteMany({});
+
     if (!(await this.brandModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleBrand();
       }
   }
 
-  async generateProducts(number: number = 100) {
+  private async generateProducts(number: number = 100) {
+    await this.productModel.deleteMany({});
+
     if (!(await this.productModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleProduct();
       }
   }
-  async generateBanners(number: number = 50) {
+  private async generateBanners(number: number = 50) {
+    await this.bannerModel.deleteMany({});
+
     if (!(await this.bannerModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleBanner();
       }
   }
 
-  async generateArticles(number: number = 100) {
+  private async generateArticles(number: number = 100) {
+    await this.articleModel.deleteMany({});
+
     if (!(await this.articleModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleArticle();
       }
   }
 
-  async generateUsers(number: number = 100) {
+  private async generateUsers(number: number = 100) {
     if ((await this.userModel.find({})).length <= 1)
       for (let i = 0; i < number; i++) {
         await this.generateSingleUser();
       }
   }
+  private async generateQAs(number: number = 50) {
+    await this.questionModel.deleteMany({});
+    await this.answerModel.deleteMany({});
 
-  async generateFakeDocuments() {
-    await this.generateCategories();
-    await this.generateBrands();
-    await this.generateProducts();
-    await this.generateBanners();
-    await this.generateArticles();
-    await this.generateUsers();
+    if (
+      !(await this.questionModel.find({})).length &&
+      !(await this.answerModel.find({})).length
+    )
+      for (let i = 0; i < number; i++) {
+        await this.generateSingleQA();
+      }
   }
 
-  // private methods
+  private async generatePayments(number: number = 100) {
+    await this.paymentModel.deleteMany({});
+
+    if (!(await this.paymentModel.find({})).length)
+      for (let i = 0; i < number; i++) {
+        await this.generateSinglePayment();
+      }
+  }
+
+  private async generateOrders(number: number = 100) {
+    await this.orderModel.deleteMany({});
+
+    if (!(await this.orderModel.find({})).length)
+      for (let i = 0; i < number; i++) {
+        await this.generateSingleOrder();
+      }
+  }
+
+  // ****** single-instance generator methods *******
+
+  private async generateSingleRole() {
+    const permissionArray = Object.values(permissions);
+
+    await this.roleModel.create({
+      name: faker.name.title(),
+      permissions: faker.random.arrayElements(
+        permissionArray,
+        faker.random.number(5) + 1,
+      ),
+    });
+  }
+
   private async generateSingleUser() {
+    const randomProductCode1 = faker.random.number(99) + 1;
+    const randomProductCode2 = faker.random.number(99) + 1;
+    const randomProductCode3 = faker.random.number(99) + 1;
+    const randomProductCode4 = faker.random.number(99) + 1;
+    const randomProductCode5 = faker.random.number(99) + 1;
+
+    const product1 = await this.productModel.findOne({ code: randomProductCode1 });
+    const product2 = await this.productModel.findOne({ code: randomProductCode2 });
+    const product3 = await this.productModel.findOne({ code: randomProductCode3 });
+    const product4 = await this.productModel.findOne({ code: randomProductCode4 });
+    const product5 = await this.productModel.findOne({ code: randomProductCode5 });
+
     await this.userModel.create({
       email: faker.internet.email(),
       phoneNumber: '09123456789',
       password: faker.internet.password(8),
       isActive: true,
       verified: true,
+      wishLists: [product1, product2, product3, product4, product5],
       addresses: [
         {
           country: faker.address.country(),
@@ -124,14 +189,16 @@ export class GenerateFakeDataService {
       fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
       isStaff: false,
       avatar: faker.image.avatar(),
-      credit: faker.random.number(1000),
-      nationalCode: `${faker.random.number(20)}`,
+      credit: faker.finance.creditCardCVV(),
+      nationalCode: `${faker.random.number(20) + 1}`,
     });
   }
 
   private async generateSingleProduct() {
-    const category = await this.categoryModel.findOne({});
-    const brand = await this.brandModel.findOne({});
+    const randomNumber = faker.random.number(99) + 1;
+
+    const category = await this.categoryModel.findOne({ code: randomNumber });
+    const brand = await this.brandModel.findOne({ code: randomNumber });
 
     await this.productModel.create({
       title: faker.commerce.productName(),
@@ -150,16 +217,16 @@ export class GenerateFakeDataService {
         faker.lorem.word(5),
         faker.lorem.word(5),
       ],
-      remainingNumber: faker.random.number(100),
+      remainingNumber: faker.random.number(100) + 1,
       review: faker.lorem.text(),
       sizes: [faker.lorem.word(3), faker.lorem.word(3), faker.lorem.word(3)],
-      maxDeliveryDays: faker.random.number(10),
-      discount: faker.random.number(100),
-      visits: faker.random.number(10000),
+      maxDeliveryDays: faker.random.number(10) + 1,
+      discount: faker.random.number(100) + 1,
+      visits: faker.random.number(10000) + 1,
       forWholeCountry: faker.random.boolean(),
       specialOfferExpires: faker.date.future(),
-      stars: faker.random.number(5),
-      weight: faker.random.number(100000),
+      stars: faker.random.number(4) + 1,
+      weight: faker.random.number(100000) + 1,
     });
   }
 
@@ -196,31 +263,142 @@ export class GenerateFakeDataService {
       picture: faker.image.abstract(1000, 1000),
       thumbnail: faker.image.abstract(200, 200),
     });
-    await this.categoryModel.create({
-      name: faker.name.jobArea(),
-      properties: [
-        faker.random.word(),
-        faker.random.word(),
-        faker.random.word(),
-        faker.random.word(),
-        faker.random.word(),
-      ],
-      picture: faker.image.abstract(1000, 1000),
-      thumbnail: faker.image.abstract(200, 200),
-      parent: parent._id,
-    });
+    for (let i = 0; i < 2; i++) {
+      const child1 = await this.categoryModel.create({
+        name: faker.name.jobArea(),
+        properties: [
+          faker.random.word(),
+          faker.random.word(),
+          faker.random.word(),
+          faker.random.word(),
+          faker.random.word(),
+        ],
+        picture: faker.image.abstract(1000, 1000),
+        thumbnail: faker.image.abstract(200, 200),
+        parent: parent._id,
+      });
+
+      for (let i = 0; i < 2; i++) {
+        const child2 = await this.categoryModel.create({
+          name: faker.name.jobArea(),
+          properties: [
+            faker.random.word(),
+            faker.random.word(),
+            faker.random.word(),
+            faker.random.word(),
+            faker.random.word(),
+          ],
+          picture: faker.image.abstract(1000, 1000),
+          thumbnail: faker.image.abstract(200, 200),
+          parent: child1._id,
+        });
+
+        for (let i = 0; i < 2; i++) {
+          const child3 = await this.categoryModel.create({
+            name: faker.name.jobArea(),
+            properties: [
+              faker.random.word(),
+              faker.random.word(),
+              faker.random.word(),
+              faker.random.word(),
+              faker.random.word(),
+            ],
+            picture: faker.image.abstract(1000, 1000),
+            thumbnail: faker.image.abstract(200, 200),
+            parent: child2._id,
+          });
+
+          for (let i = 0; i < 2; i++) {
+            await this.categoryModel.create({
+              name: faker.name.jobArea(),
+              properties: [
+                faker.random.word(),
+                faker.random.word(),
+                faker.random.word(),
+                faker.random.word(),
+                faker.random.word(),
+              ],
+              picture: faker.image.abstract(1000, 1000),
+              thumbnail: faker.image.abstract(200, 200),
+              parent: child3._id,
+            });
+          }
+        }
+      }
+    }
   }
 
   private async generateSingleBanner() {
+    const platforms = Object.values(platformsConstant);
+
     await this.bannerModel.create({
       name: faker.name.title(),
-      platforms: [
-        platformsConstant.WEBSITE,
-        platformsConstant.ANDROID,
-        platformsConstant.IOS,
-      ],
+      platforms: faker.random.arrayElements(platforms, faker.random.number(2) + 1),
       link: faker.internet.url(),
       status: faker.random.boolean(),
+      thumbnail: faker.image.abstract(240, 60),
+      picture: faker.image.abstract(1200, 300),
+    });
+  }
+
+  private async generateSingleQA() {
+    const randomNumber = faker.random.number(99) + 1;
+
+    const user = await this.userModel.findOne({ code: randomNumber });
+    const product = await this.productModel.findOne({ code: randomNumber });
+
+    const question = await this.questionModel.create({
+      user: user._id,
+      body: faker.lorem.text(),
+      product: product._id,
+      published: faker.random.boolean(),
+    });
+
+    for (let i = 0; i < 5; i++) {
+      await this.answerModel.create({
+        question: question._id,
+        user: user._id,
+        body: faker.lorem.text(),
+        published: faker.random.boolean(),
+      });
+    }
+  }
+
+  private async generateSinglePayment() {
+    const randomNumber = faker.random.number(99) + 1;
+    const user = await this.userModel.findOne({ code: randomNumber });
+
+    await this.paymentModel.create({
+      user: user._id,
+      amount: faker.random.number(1000000) + 1,
+      status: faker.random.objectElement(paymentStatusesConstant),
+      method: faker.random.objectElement(paymentMethodsConstant),
+      paymentInformation: {
+        account: `${faker.finance.account()}`,
+        bic: faker.finance.bic(),
+        bank: faker.random.word(),
+        emv: faker.random.word(),
+      },
+    });
+  }
+  private async generateSingleOrder() {
+    const randomNumber = faker.random.number(99) + 1;
+    const randomProductCode1 = faker.random.number(99) + 1;
+    const randomProductCode2 = faker.random.number(99) + 1;
+    const randomProductCode3 = faker.random.number(99) + 1;
+
+    const product1 = await this.productModel.findOne({ code: randomProductCode1 });
+    const product2 = await this.productModel.findOne({ code: randomProductCode2 });
+    const product3 = await this.productModel.findOne({ code: randomProductCode3 });
+
+    const payment = await this.paymentModel.findOne({ code: randomNumber });
+    const user = await this.userModel.findOne({ code: randomNumber });
+
+    await this.orderModel.create({
+      user: user._id,
+      payment: payment._id,
+      products: [product1._id, product2._id, product3._id],
+      status: faker.random.objectElement(orderStatuesConstant),
     });
   }
 }

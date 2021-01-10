@@ -32,6 +32,20 @@ export class Banner {
     trim: true,
   })
   link: string;
+
+  @Prop({
+    type: String,
+    required: false,
+    index: true,
+  })
+  thumbnail?: string;
+
+  @Prop({
+    type: String,
+    required: false,
+    index: true,
+  })
+  picture?: string;
 }
 
 export const BannerSchema = SchemaFactory.createForClass(Banner);
