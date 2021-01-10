@@ -69,8 +69,6 @@ export class GenerateFakeDataService {
   }
 
   private async generateBrands(number: number = 100) {
-    await this.brandModel.deleteMany({});
-
     if (!(await this.brandModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleBrand();
@@ -78,16 +76,12 @@ export class GenerateFakeDataService {
   }
 
   private async generateProducts(number: number = 100) {
-    await this.productModel.deleteMany({});
-
     if (!(await this.productModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleProduct();
       }
   }
   private async generateBanners(number: number = 50) {
-    await this.bannerModel.deleteMany({});
-
     if (!(await this.bannerModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleBanner();
@@ -95,8 +89,6 @@ export class GenerateFakeDataService {
   }
 
   private async generateArticles(number: number = 100) {
-    await this.articleModel.deleteMany({});
-
     if (!(await this.articleModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleArticle();
@@ -110,9 +102,6 @@ export class GenerateFakeDataService {
       }
   }
   private async generateQAs(number: number = 50) {
-    await this.questionModel.deleteMany({});
-    await this.answerModel.deleteMany({});
-
     if (
       !(await this.questionModel.find({})).length &&
       !(await this.answerModel.find({})).length
@@ -123,8 +112,6 @@ export class GenerateFakeDataService {
   }
 
   private async generatePayments(number: number = 100) {
-    await this.paymentModel.deleteMany({});
-
     if (!(await this.paymentModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSinglePayment();
@@ -132,8 +119,6 @@ export class GenerateFakeDataService {
   }
 
   private async generateOrders(number: number = 100) {
-    await this.orderModel.deleteMany({});
-
     if (!(await this.orderModel.find({})).length)
       for (let i = 0; i < number; i++) {
         await this.generateSingleOrder();
