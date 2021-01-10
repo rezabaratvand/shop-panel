@@ -54,8 +54,6 @@ export class GenerateInitialDataService implements OnModuleInit {
   }
 
   async InitialWebsiteInfo() {
-    await this.categoryModel.deleteMany({});
-
     const websiteInfo = await this.websiteInfoModel.find();
     if (websiteInfo.length) return websiteInfo;
 
