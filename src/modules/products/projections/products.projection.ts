@@ -1,5 +1,3 @@
-import { ProductDocument } from './schemas/product.schema';
-
 export const products_projection = {
   title: 1 as any,
   thumbnail: 1 as any,

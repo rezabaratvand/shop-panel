@@ -11,9 +11,11 @@ import { CreateUserDto } from './dto/createUserDto.dto';
 import { UpdateUserDto } from './dto/updateUserDto';
 import { User, UserDocument } from './schemas/user.schema';
 import { FilterQueries } from '../../utils/filterQueries.util';
-import { ui_query_projection_fields } from './users.projection';
+import { admin_projection_fields } from './projections/admins.projections';
+import { user_projection_fields } from './projections/users.projection';
 import { Role, RoleDocument } from '../auth/schemas/role.schema';
 import { AdminLogsService } from '../admin-logs/admin-logs.service';
+
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import * as mongoose from 'mongoose';
@@ -35,24 +37,26 @@ export class UsersService {
     const filterQuery = new FilterQueries(
       this.userModel,
       filterQueryDto,
-      ui_query_projection_fields,
+      admin_projection_fields,
     );
 
     filterQuery.filter().limitFields().paginate().sort();
 
     const users = await filterQuery.query
       .find({ isStaff: true })
-      .populate('roles', 'name permissions')
-      .populate('wishLists', 'title ');
+      .populate('wishLists', 'title')
+      .populate('roles', 'name');
+
     return users;
   }
 
   async getAdminById(code: number): Promise<UserDocument> {
     const user = await this.userModel
       .findOne({ code, isStaff: true })
-      .select(ui_query_projection_fields)
-      .populate('roles', 'name permissions')
-      .populate('wishLists', 'title ');
+      .populate('wishLists', 'title')
+      .populate('roles', 'name')
+      .select(admin_projection_fields);
+
     if (!user) throw new NotFoundException('not found admin user with the given id');
     return user;
   }
@@ -90,24 +94,24 @@ export class UsersService {
     const filterQuery = new FilterQueries(
       this.userModel,
       filterQueryDto,
-      ui_query_projection_fields,
+      user_projection_fields,
     );
 
     filterQuery.filter().limitFields().paginate().sort();
 
     const users = await filterQuery.query
       .find({ isStaff: false })
-      .populate('roles', 'name permissions')
-      .populate('wishLists', 'title ');
+      .populate('wishLists', 'title');
+
     return users;
   }
 
   async getUserById(code: number): Promise<UserDocument> {
     const user = await this.userModel
       .findOne({ code, isStaff: false })
-      .select(ui_query_projection_fields)
-      .populate('roles', 'name permissions')
-      .populate('wishLists', 'title ');
+      .populate('wishLists', 'title')
+      .select(user_projection_fields);
+
     if (!user) throw new NotFoundException('not found user by the given id');
     return user;
   }

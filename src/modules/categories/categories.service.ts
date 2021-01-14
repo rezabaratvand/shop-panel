@@ -11,7 +11,6 @@ import { Model } from 'mongoose';
 import { Request } from 'express';
 import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { FilterQueries } from '../../utils/filterQueries.util';
-import { category_projection } from './category.projection';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category, CategoryDocument } from './schemas/category.schema';
@@ -26,11 +25,7 @@ export class CategoriesService {
   ) {}
 
   async getAll(filterQueryDto: FilterQueryDto): Promise<CategoryDocument[]> {
-    const filterQuery = new FilterQueries(
-      this.categoryModel,
-      filterQueryDto,
-      category_projection,
-    );
+    const filterQuery = new FilterQueries(this.categoryModel, filterQueryDto);
 
     filterQuery.filter().limitFields().paginate().sort();
 
@@ -40,6 +35,7 @@ export class CategoriesService {
   async getById(code: number): Promise<CategoryDocument> {
     const category = await this.categoryModel.findOne({ code });
     if (!category) throw new NotFoundException('Category not found');
+
     return category;
   }
 

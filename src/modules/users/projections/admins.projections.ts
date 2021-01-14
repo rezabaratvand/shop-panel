@@ -1,6 +1,4 @@
-import { UserDocument } from './schemas/user.schema';
-
-export const ui_query_projection_fields = {
+export const admin_projection_fields = {
   _id: 1 as any,
   email: 1 as any,
   phoneNumber: 1 as any,
@@ -11,5 +9,5 @@ export const ui_query_projection_fields = {
   credit: 1 as any,
   nationalCode: 1 as any,
   wishLists: 1 as any,
-  code: 1,
+  code: 1 as any,
 };

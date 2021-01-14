@@ -4,7 +4,7 @@ import { AuthModule } from '../auth/auth.module';
 import { Role, RoleSchema } from '../auth/schemas/role.schema';
 import { Product, ProductSchema } from '../products/schemas/product.schema';
 import { User, UserSchema } from './schemas/user.schema';
-import { UsersController } from './users.panel.controller';
+import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 
 @Module({

@@ -11,7 +11,7 @@ import { FilterQueryDto } from '../../common/dto/filterQuery.dto';
 import { FilterQueries } from '../../utils/filterQueries.util';
 import { Category, CategoryDocument } from '../categories/schemas/category.schema';
 import { Product, ProductDocument } from './schemas/product.schema';
-import { products_projection } from './products.projection';
+import { products_projection } from './projections/products.projection';
 import { CreateProductDto } from './dto/create-product.dto';
 import { AdminLogsService } from '../admin-logs/admin-logs.service';
 import { REQUEST } from '@nestjs/core';
