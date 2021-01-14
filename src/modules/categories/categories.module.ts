@@ -4,6 +4,7 @@ import { CategoriesController } from './categories.panel.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Category, CategorySchema } from './schemas/category.schema';
 import { AuthModule } from '../auth/auth.module';
+import { CategoriesShopController } from './categories.shop.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AuthModule } from '../auth/auth.module';
     ]),
     AuthModule,
   ],
-  controllers: [CategoriesController],
+  controllers: [CategoriesController, CategoriesShopController],
   providers: [CategoriesService],
 })
 export class CategoriesModule {}

@@ -43,3 +43,10 @@ export class Category {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
+
+// query middleware to populate before each find query
+const schema: any = CategorySchema;
+schema.pre(/^find/, function (next) {
+  this.populate({ path: 'parent', select: 'name' });
+  next();
+});

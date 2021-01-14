@@ -33,14 +33,12 @@ export class CategoriesService {
     );
 
     filterQuery.filter().limitFields().paginate().sort();
-    const category = await filterQuery.query.populate('parent', 'name');
-    return category;
+
+    return await filterQuery.query;
   }
 
   async getById(code: number): Promise<CategoryDocument> {
-    const category = await this.categoryModel
-      .findOne({ code })
-      .populate('parent', 'name');
+    const category = await this.categoryModel.findOne({ code });
     if (!category) throw new NotFoundException('Category not found');
     return category;
   }

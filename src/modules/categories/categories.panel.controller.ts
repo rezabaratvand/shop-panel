@@ -3,13 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Put,
   Param,
   Delete,
   UseGuards,
   HttpCode,
-  UseInterceptors,
-  UploadedFile,
   HttpStatus,
   Query,
   Patch,
@@ -17,7 +14,6 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
-  ApiConsumes,
   ApiCreatedResponse,
   ApiNoContentResponse,
   ApiOkResponse,
