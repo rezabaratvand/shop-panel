@@ -1,6 +1,6 @@
 import { ProductDocument } from './schemas/product.schema';
 
-export const products_projection: Partial<ProductDocument> = {
+export const products_projection = {
   title: 1 as any,
   thumbnail: 1 as any,
   category: 1 as any,
@@ -17,4 +17,5 @@ export const products_projection: Partial<ProductDocument> = {
   discount: 1 as any,
   visits: 1 as any,
   weight: 1 as any,
+  code: 1 as any,
 };

@@ -5,6 +5,7 @@ import { Product, ProductSchema } from './schemas/product.schema';
 import { ProductsController } from './products.panel.controller';
 import { ProductsService } from './products.service';
 import { Brand, BrandSchema } from '../brands/schemas/brand.schema';
+import { ShopProductsController } from './products.shop.controller';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { Brand, BrandSchema } from '../brands/schemas/brand.schema';
       },
     ]),
   ],
-  controllers: [ProductsController],
+  controllers: [ProductsController, ShopProductsController],
   providers: [ProductsService],
 })
 export class ProductsModule {}
